@@ -7,7 +7,10 @@ import onerror from 'koa-onerror';
 import bodyparser from 'koa-bodyparser';
 import logger from 'koa-logger';
 import glob from 'glob';
+import Db from './mongo';
 
+const db = new Db();
+db.init();
 const decRouter = DecRouter({
 	controllersDir: `${__dirname}/../app/controller`
 });
