@@ -18,19 +18,20 @@ export default class Home extends Component {
 	componentDidMount() {
 		this._getAllMovies();
 	}
-	_getAllMovies() {
-		request(window.__LOADING__)({
-			method: 'get',
-			url: `/api/v0/movies?type=${this.state.type || ''}&year=${this.state.year || ''}`
-		}).then(res => {
-			this.setState({
-				movies: res
+	async _getAllMovies() {
+		try {
+			const res = await request(window.__LOADING__)({
+				method: 'get',
+				url: `/api/v0/movies?type=${this.state.type || ''}&year=${this.state.year || ''}`
 			});
-		}).catch(() => {
+			this.setState({
+				movies: res.filter(item => item.posterKey)
+			});
+		} catch(err) {
 			this.setState({
 				movies: []
 			});
-		});
+		}
 	}
 	_selectItem({ key }) {
 		this.setState({

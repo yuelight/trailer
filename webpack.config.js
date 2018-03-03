@@ -5,6 +5,11 @@ module.exports = {
 		filename: 'build.js'
 	},
 	devtool: 'cheap-module-source-map',
+	resolve: {
+		alias: {
+			DPlayer: `${__dirname}/node_modules/dplayer`
+		}
+	},
 	module: {
 		rules: [
 			{
