@@ -7,6 +7,8 @@ import onerror from 'koa-onerror';
 import bodyparser from 'koa-bodyparser';
 import logger from 'koa-logger';
 import glob from 'glob';
+import middleware from 'koa-webpack';
+import config from '../../webpack.config';
 import Db from './mongo';
 
 const db = new Db();
@@ -28,6 +30,19 @@ app.use(require('koa-static')(__dirname + '/../public'));
 
 app.use(views(__dirname + '/../app/views', {
 	extension: 'pug'
+}));
+
+app.use(middleware({
+	config,
+	dev: {
+		publicPath: '/',
+		logLevel: 'error'
+	},
+	hot: {
+		hot: true,
+		reload: true,
+		logLevel: 'silent'
+	}
 }));
 
 // logger

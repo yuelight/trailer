@@ -10,3 +10,18 @@ cd trailer
 npm install
 npm start
 ```
+
+### eslint
+```
+npm run eslint yourfile
+```
+
+### 规范化
+```
+npm run lint yourfile
+```
+
+### editorconfig fix
+```
+npm run indent yourfile
+```
