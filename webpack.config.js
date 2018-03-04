@@ -7,6 +7,7 @@ module.exports = {
 	devtool: 'cheap-module-source-map',
 	resolve: {
 		alias: {
+			assets: `${__dirname}/src/assets`,
 			DPlayer: `${__dirname}/node_modules/dplayer`
 		}
 	},

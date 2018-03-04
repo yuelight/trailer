@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import request from '../lib/request';
 import {
 	Menu,
-	Spin
+	Spin,
+	Icon
 } from 'antd';
 import navRoutes from '../nav';
 
@@ -40,6 +42,15 @@ export default class LayoutDefault extends Component {
 			loading: status
 		});
 	}
+	async unlock() {
+		try {
+			await request({method: 'post', url: '/admin/logout'});
+			window.localStorage.clear();
+			window.location.href = '/';
+		} catch (err) {
+			console.error(err);
+		}
+	}
 	render() {
 		const { children } = this.props;
 		const { loading, tip } = this.state;
@@ -68,6 +79,9 @@ export default class LayoutDefault extends Component {
 							</Menu.Item>
 						))
 					}
+					<Menu.Item>
+						<Icon onClick={this.unlock} type='unlock' style={{ marginLeft: '300px', fontSize: 20, color: '#fff' }} />
+					</Menu.Item>
 				</Menu>
 				<Spin
 					spinning={loading}

@@ -1,21 +1,35 @@
 import Koa from 'koa';
 const app = new Koa();
 import views from 'koa-views';
-import DecRouter from 'koa-dec-router';
+import { Route } from 'koa-decorators-router';
 import json from 'koa-json';
 import onerror from 'koa-onerror';
 import bodyparser from 'koa-bodyparser';
+import session from 'koa-session';
 import logger from 'koa-logger';
 import glob from 'glob';
 import middleware from 'koa-webpack';
 import config from '../../webpack.config';
 import Db from './mongo';
 
+const router = new Route({
+	app,
+	apiDirPath: `${__dirname}/../app/controller`
+});
+
 const db = new Db();
 db.init();
-const decRouter = DecRouter({
-	controllersDir: `${__dirname}/../app/controller`
-});
+
+app.keys = ['triler'];
+const CONFIG = {
+	key: 'koa:sess',
+	maxAge: 86400000,
+	overwrite: true,
+	httpOnly: false,
+	signed: true,
+	rolling: false,
+	renew: false
+};
 
 // error handler
 onerror(app);
@@ -25,6 +39,7 @@ app.use(bodyparser({
 	enableTypes:['json', 'form', 'text']
 }));
 app.use(json());
+app.use(session(CONFIG, app));
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/../public'));
 
@@ -54,7 +69,7 @@ app.use(async (ctx, next) => {
 });
 
 // routes
-app.use(decRouter.router.routes(), decRouter.router.allowedMethods());
+router.registerRouters();
 
 // error-handling
 app.on('error', (err, ctx) => {

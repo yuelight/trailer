@@ -2,7 +2,9 @@ import mongoose from 'mongoose';
 const Movie = mongoose.model('Movie');
 
 export const getAllMovies = async (type, year) => {
-	let query = {};
+	let query = {
+		del: false
+	};
 	if (type)
 		query.movieTypes = { $in: [type] };
 	if (year)
@@ -21,4 +23,11 @@ export const getRelativeMovies = async (movie) => {
 			$in: movie.movieTypes
 		}
 	});
+};
+
+export const findAndRemove = async (id) => {
+	const movie = await Movie.findOne({ _id: id });
+	if (movie)
+		movie.del = true;
+	await movie.save();
 };

@@ -36,6 +36,10 @@ const movieSchema = new Schema({
 			type: Date,
 			default: Date.now()
 		}
+	},
+	del: {
+		type: Boolean,
+		default: false
 	}
 });
 
