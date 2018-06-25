@@ -7,7 +7,6 @@ import onerror from 'koa-onerror';
 import bodyparser from 'koa-bodyparser';
 import session from 'koa-session';
 import logger from 'koa-logger';
-import glob from 'glob';
 import middleware from 'koa-webpack';
 import config from '../../webpack.config';
 import Db from './mongo';
